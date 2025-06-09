@@ -1,0 +1,21 @@
+public enum TokenListEnum {
+    CLASS,
+    EXTENDS,
+    PUBLIC,
+    STATIC,
+    VOID,
+    MAIN,
+    STRING,
+    INT,
+    NULL,
+    THIS,
+    NEW,
+    RETURN,
+    IF,
+    ELSE,
+    WHILE,
+    PRINT,
+    LENGTH,
+    TRUE,
+    FALSE
+}

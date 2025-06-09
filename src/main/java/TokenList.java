@@ -1,0 +1,5 @@
+public class TokenList {
+
+    public final String[] tokens = {"CLASS","EXTENDS","PUBLIC","STATIC","VOID","MAIN","STRING","INT","NULL","THIS",
+            "NEW","RETURN","IF","ELSE","WHILE","PRINT","LENGTH","TRUE","FALSE","(",")","[","]"};
+}
