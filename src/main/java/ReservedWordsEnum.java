@@ -1,4 +1,4 @@
-public enum TokenListEnum {
+public enum ReservedWordsEnum {
     CLASS,
     EXTENDS,
     PUBLIC,
