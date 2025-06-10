@@ -11,25 +11,31 @@ public class Lexer {
         }
 
         for (int l = 0; l < lines.length; l++){ // iterating each line of the code
-            char[] chars = lines[l].toCharArray(); // convert the current line into a char array
 
-            StringBuilder buildingLexeme = new StringBuilder(); // stores the lexeme that has been building
+            char[] chars = lines[l].toCharArray(); // convert the current line into a char array
+            int start = 0;
+            int end = 0;
 
             for (int c = 0; c < chars.length; c++) { // for each character of the line
 
-                if (!isLetterOrDigit(chars[c])) {
+                end = c;
 
-                    if (!buildingLexeme.toString().isBlank()){
-                        tokens.add(String.valueOf(buildingLexeme));
-                        buildingLexeme.setLength(0);
+                if (!isLetterOrDigit(chars[c])){
+
+                    // build the previous lexeme (start untiel previous char)
+                    // if a non digit or letter folow another non digit ou letter, the start and end pointers will be the same
+                    if (start != end){
+                        String buildingLexeme = lines[l].substring(start,end); // start is inclusive and end is exclusive
+                        tokens.add(buildingLexeme);
                     }
+
+                    // build the current lexeme (current char)
                     if (!isSpace(chars[c])){
                         char currentLexeme = chars[c];
                         tokens.add(String.valueOf(currentLexeme));
                     }
 
-                } else {
-                    buildingLexeme.append(chars[c]);
+                    start = c+1; // if character is space ou another token, set the initial pointer to the next character
                 }
             }
         }
