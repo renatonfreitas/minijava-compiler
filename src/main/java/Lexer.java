@@ -59,6 +59,7 @@ public class Lexer {
                                 } else {
                                     // TODO save the line of bad tokens
                                     name = TokenNames.ERROR.name();
+                                    throw new LexicalErrorException("Lexical error at line " + (l+1) + ": \"" + buildingLexeme + "\"");
                                 }
                             }
                         }
@@ -79,7 +80,6 @@ public class Lexer {
                             String name = utils.getName(endLine);
                             Token tokenEndLine = new Token(name, endLine);
                             tokensList.add(tokenEndLine);
-//                            System.out.println(tokenEndLine);
 
                         }
                     }
