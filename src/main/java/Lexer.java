@@ -3,9 +3,7 @@ import java.util.ArrayList;
 public class Lexer {
 
     public void readLexeme(String input) {
-
-        LexerVerifier verif = new LexerVerifier();
-
+        LexerUtils utils = new LexerUtils();
         ArrayList<Token> tokensList = new ArrayList<Token>();
         ArrayList<String> symbolTable = new ArrayList<String>();
 
@@ -15,39 +13,93 @@ public class Lexer {
         }
 
         for (int l = 0; l < lines.length; l++){ // iterating each line of the code
-
             char[] chars = lines[l].toCharArray(); // convert the current line into a char array
-            int start = 0;
-            int end = 0;
+            int startLexeme = 0;
+            int endLexeme = 0;
 
             for (int c = 0; c < chars.length; c++) { // for each character of the line
+                endLexeme = c;
+                char currentChar = chars[c];
 
-                end = c;
+                if (!utils.isLetter(currentChar) && !utils.isDigit(currentChar)){ // the current char is a non identifier
 
-                if (!verif.isAlphanumeric(chars[c]) && !verif.isUnderscore(chars[c])){
+                    // build the previous lexeme (startLexeme untiel previous char)
+                    // if a non digit or letter folow another non digit ou letter, the startLexeme and endLexeme pointers will be the same
+                    if (startLexeme != endLexeme){
 
-                    // build the previous lexeme (start untiel previous char)
-                    // if a non digit or letter folow another non digit ou letter, the start and end pointers will be the same
-                    if (start != end){
-                        String buildingLexeme = lines[l].substring(start,end); // start is inclusive and end is exclusive
-                        String name = TokenNames.IDENTIFIER.name();
+                        if (!utils.isDoubleSymbol(currentChar) || ((utils.isLetter(chars[c-1]) && utils.isDoubleSymbol(currentChar)))){
+                            String buildingLexeme = lines[l].substring(startLexeme, endLexeme); // startLexeme is inclusive and endLexeme is exclusive
+                            String name; // stores the name of token
 
-                        if (!verif.isReservedWord(buildingLexeme)){
-                            symbolTable.add(buildingLexeme);
-                            Token tokenIdentifier = new Token(name, symbolTable.indexOf(buildingLexeme));
-                            tokensList.add(tokenIdentifier);
+                            if (!utils.startsWithNumeric(buildingLexeme) && utils.isLetter(buildingLexeme.charAt(0))){ // if it does not start with a number it will be an identifier
+                                name = TokenNames.IDENTIFIER.name();
+
+                                if (!utils.isReservedWord(buildingLexeme)){
+                                    if (!symbolTable.contains(buildingLexeme)){
+                                        symbolTable.add(buildingLexeme);
+                                    }
+                                    Token tokenIdentifier = new Token(name, symbolTable.indexOf(buildingLexeme));
+                                    tokensList.add(tokenIdentifier);
+
+                                } else {
+                                    name = buildingLexeme.toUpperCase();
+                                    Token tokenReservedWord = new Token(name);
+                                    tokensList.add(tokenReservedWord);
+                                }
+                            } else { // if it starts with a number it can be either an int literal or a token with bad formation
+
+                                if (utils.isIntLiteral(buildingLexeme)){
+                                    name = TokenNames.INTLITERAL.name();
+                                    Token tokenIntLiteral = new Token(name, buildingLexeme);
+                                    tokensList.add(tokenIntLiteral);
+                                } else if (utils.isNonIdentifier(buildingLexeme)) {
+                                    name = utils.getName(buildingLexeme);
+                                    Token tokenNonIdentifier = new Token(name, buildingLexeme);
+                                    tokensList.add(tokenNonIdentifier);
+                                } else {
+                                    // TODO save the line of bad tokens
+                                    name = TokenNames.ERROR.name();
+                                }
+                            }
                         }
 
-//                        tokensList.add(buildingLexeme);
                     }
 
-                    // build the current lexeme (current char)
-                    if (!verif.isSpace(chars[c])){
-                        char currentLexeme = chars[c];
-//                        tokensList.add(String.valueOf(currentLexeme));
+                    if (utils.isSpace(currentChar)){
+                        startLexeme = c+1;
+                        continue;
+
+                    } else {
+                        if (!utils.isDoubleSymbol(currentChar) || ((utils.isLetter(chars[c-1]) && utils.isDoubleSymbol(currentChar)))){
+                            startLexeme = c;
+                        }
+
+                        if (c == (chars.length-1) && utils.isEndSymbol(currentChar)){
+                            String endLine = lines[l].substring(startLexeme, endLexeme+1);
+                            String name = utils.getName(endLine);
+                            Token tokenEndLine = new Token(name, endLine);
+                            tokensList.add(tokenEndLine);
+//                            System.out.println(tokenEndLine);
+
+                        }
                     }
 
-                    start = c+1; // if character is space ou another token, set the initial pointer to the next character
+                } else {
+                    // cover a letter or digit immediately after a non letter and digit
+                    if (((endLexeme - startLexeme) > 0) && !utils.isDigit(chars[startLexeme]) && !utils.isLetter(chars[startLexeme])){
+                        String previousLexeme = lines[l].substring(startLexeme, endLexeme);
+                        String name = utils.getName(previousLexeme);
+                        Token tokenNonIdentifier = new Token(name, previousLexeme);
+                        tokensList.add(tokenNonIdentifier);
+
+                        // if the letter or digit
+                        if (utils.isSpace(currentChar)){
+                            startLexeme = c+1;
+                            continue;
+                        } else {
+                            startLexeme = c;
+                        }
+                    }
                 }
             }
         }

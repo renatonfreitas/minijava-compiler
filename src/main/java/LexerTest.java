@@ -4,10 +4,12 @@ public class LexerTest {
         String code = """
             class Test {
                 public static void main(String[] args) {
-                    int x = 42;
-                    if (x < 100) {
-                        x = x + 1;
-                    }
+                    int x;
+                    boolean y = true;
+                    boolean z = true;
+                        if (x && y) {
+                            x = 42;
+                        }
                 }
             }
         """;
@@ -16,8 +18,4 @@ public class LexerTest {
         lexer.readLexeme(code);
 
         }
-
-
-
-
 }

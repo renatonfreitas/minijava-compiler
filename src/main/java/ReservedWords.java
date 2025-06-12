@@ -1,12 +1,13 @@
-public enum ReservedWordsEnum {
+public enum ReservedWords {
     CLASS,
     EXTENDS,
     PUBLIC,
     STATIC,
     VOID,
-    MAIN,
+    MAIN, // TODO remains a reserved word?
     STRING,
     INT,
+    BOOLEAN,
     NULL,
     THIS,
     NEW,

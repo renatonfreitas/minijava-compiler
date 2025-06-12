@@ -3,20 +3,21 @@ public class Token {
     private String name;
     private String attribute;
     private int attributeId;
-    private int line;
 
     public Token(String name, String attribute) {
         this.name = name;
         this.attribute = attribute;
+        this.attributeId = -1;
     }
 
     public Token(String name){
         this.name = name;
+        this.attributeId = -1;
     }
 
-    public Token(String name, int attribute){
+    public Token(String name, int attributeId){
         this.name = name;
-        this.attributeId = attribute;
+        this.attributeId = attributeId;
     }
 
     @Override
@@ -25,7 +26,6 @@ public class Token {
                 "name='" + name + '\'' +
                 ", attribute='" + attribute + '\'' +
                 ", attributeId=" + attributeId +
-                ", line=" + line +
                 '}';
     }
 }

@@ -19,6 +19,7 @@ public enum TokenNames {
     TRUE, // true
     FALSE, // false
     IDENTIFIER,
+    INTLITERAL,
     LPAREN, // (
     RPAREN, // )
     LSQBRACKET, // [
@@ -34,5 +35,6 @@ public enum TokenNames {
     MINUS, // -
     TIMES, // *
     AND, // &&
-    NOT; // !
+    NOT, // !
+    ERROR;
 }
