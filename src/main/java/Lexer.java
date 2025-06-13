@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 
 public class Lexer {
-
-    public void readLexeme(String input) {
         LexerUtils utils = new LexerUtils();
         ArrayList<Token> tokensList = new ArrayList<Token>();
         ArrayList<String> symbolTable = new ArrayList<String>();
+        Data data = new Data(tokensList, symbolTable);
+
+    public void readLexeme(String input) {
 
         String[] lines = input.split("\n"); // store each line of the code as an element
         for (int i = 0; i < lines.length; i++){ // format each line removing unnecessary spaces
@@ -57,7 +58,6 @@ public class Lexer {
                                     Token tokenNonIdentifier = new Token(name, buildingLexeme);
                                     tokensList.add(tokenNonIdentifier);
                                 } else {
-                                    // TODO save the line of bad tokens
                                     name = TokenNames.ERROR.name();
                                     throw new LexicalErrorException("Lexical error at line " + (l+1) + ": \"" + buildingLexeme + "\"");
                                 }
@@ -103,11 +103,10 @@ public class Lexer {
                 }
             }
         }
-        System.out.println(symbolTable);
-        for (Token token: tokensList){
-            System.out.println(token.toString());
-        }
-//        System.out.println(tokensList);
+//        System.out.println(symbolTable);
+//        for (Token token: tokensList){
+//            System.out.println(token.toString());
+//        }
     }
 
     private void buildToken(String lexeme){

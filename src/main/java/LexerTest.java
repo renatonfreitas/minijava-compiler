@@ -6,7 +6,7 @@ public class LexerTest {
                 public static void main(String[] args) {
                     int x;
                     boolean y = true;
-                    3boolean z = true;
+                    boolean z = true;
                         if (x && y) {
                             x = 42;
                         }
@@ -16,6 +16,9 @@ public class LexerTest {
 
         Lexer lexer = new Lexer();
         lexer.readLexeme(code);
-
+        System.out.println(lexer.data.getSymbolTable());
+        for (Token token: lexer.data.getTokenList()) {
+            System.out.println(token);
+        }
         }
 }
