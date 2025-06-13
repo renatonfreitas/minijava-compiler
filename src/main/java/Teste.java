@@ -1,4 +1,4 @@
-public class LexerTest {
+public class Teste {
 
     public static void main(String[] args) {
         String code = """
@@ -6,7 +6,7 @@ public class LexerTest {
                 public static void main(String[] args) {
                     int x;
                     boolean y = true;
-                    3boolean z = true;
+                    boolean z = true;
                         if (x && y) {
                             x = 42;
                         }
@@ -14,8 +14,10 @@ public class LexerTest {
             }
         """;
 
-        Lexer lexer = new Lexer();
-        lexer.readLexeme(code);
 
-        }
+        Lexer lexer = new Lexer();
+//        lexer.readLexeme(code);
+        ReservedWords[] values = ReservedWords.values();
+        System.out.println(ReservedWords.CLASS.name().equalsIgnoreCase("class"));
+    }
 }
