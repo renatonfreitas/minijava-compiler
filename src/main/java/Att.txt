@@ -1,3 +1,2 @@
 add support for more tokens
-make symbol table and token list global in project
 

@@ -14,7 +14,7 @@ public enum TokenNames {
     IF, // if
     ELSE, // else
     WHILE, // while
-    PRINT, // print
+    PRINT, // Print
     LENGTH, // length
     TRUE, // true
     FALSE, // false
